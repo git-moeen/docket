@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #0c0b09;
+  --paper: #e7dfd0;
+  --mute: #8d8678;
+  --line: #2c2822;
+  --fight: #e25b2a;
+  --wh: #c44738;
+  --dod: #7d8c62;
+  --lin: #efe6d6;
+  --ant: #c9a36a;
+}
+
+html,
+body {
+  background: var(--ink);
+  color: var(--paper);
+  min-height: 100%;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+body {
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+.font-display {
+  font-family: var(--font-display), ui-serif, Georgia, serif;
+}
+
+.docket-grid {
+  background-image: radial-gradient(circle at center, #2a261f 0.7px, transparent 0.8px);
+  background-size: 18px 18px;
+}
+
+.node-idle {
+  opacity: 0.92;
+}
+
+.node-dim {
+  opacity: 0.18;
+  filter: grayscale(0.4);
+}
+
+.node-lit {
+  opacity: 1;
+}
+
+.edge-idle {
+  opacity: 0.55;
+}
+
+.edge-dim {
+  opacity: 0.08;
+}
+
+.edge-lit {
+  opacity: 1;
+}
+
+.edge-draw {
+  stroke-dasharray: 8 6;
+  animation: dash 18s linear infinite;
+}
+
+.edge-draw-lit {
+  stroke-dasharray: 420;
+  stroke-dashoffset: 420;
+  animation: draw 0.7s ease forwards;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -280;
+  }
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.glow-fight {
+  filter: drop-shadow(0 0 10px rgba(226, 91, 42, 0.55));
+}
+
+.glow-paper {
+  filter: drop-shadow(0 0 12px rgba(231, 223, 208, 0.28));
+}
