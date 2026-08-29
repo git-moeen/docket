@@ -19,15 +19,18 @@ const ACTOR_INK: Record<ActorId, string> = {
   anthropic: "#1a140c",
 };
 
-function tone(id: string, lit: Set<string> | null): Tone {
+function tone(id: string, lit: Set<string> | null, selected: string | null): Tone {
+  if (selected === id) {
+    return "lit";
+  }
   if (!lit) {
     return "idle";
   }
   return lit.has(id) ? "lit" : "dim";
 }
 
-function nodeClass(id: string, lit: Set<string> | null): string {
-  const t = tone(id, lit);
+function nodeClass(id: string, lit: Set<string> | null, selected: string | null): string {
+  const t = tone(id, lit, selected);
   if (t === "lit") {
     return "node-lit glow-paper";
   }
@@ -38,7 +41,7 @@ function nodeClass(id: string, lit: Set<string> | null): string {
 }
 
 function edgeClass(id: string, kind: GraphEdge["kind"], lit: Set<string> | null): string {
-  const t = tone(id, lit);
+  const t = tone(id, lit, null);
   const fight = kind === "mismatch" ? " glow-fight" : "";
   if (t === "lit") {
     return `edge-lit${fight} ${kind === "mismatch" ? "edge-draw-lit" : ""}`;
@@ -76,8 +79,7 @@ function edgePath(graph: DocketGraph, edge: GraphEdge): string {
   const y1 = from.y + from.h / 2;
   const x2 = to.x;
   const y2 = to.y - to.h / 2;
-  const midY = (y1 + y2) / 2;
-  return `M ${x1} ${y1} C ${x1} ${midY}, ${x2} ${midY}, ${x2} ${y2}`;
+  return `M ${x1} ${y1} C ${x1} ${y1 + 36}, ${x2} ${y2 - 36}, ${x2} ${y2}`;
 }
 
 function wrapQuote(text: string, width: number): string[] {
@@ -189,7 +191,7 @@ export function Graph({
               key={node.id}
               node={node}
               actor={node.actor}
-              className={nodeClass(node.id, litNodeSet)}
+              className={nodeClass(node.id, litNodeSet, selected)}
               selected={selected === node.id}
               onSelect={onSelect}
             />
@@ -200,7 +202,7 @@ export function Graph({
             <StatementMark
               key={node.id}
               node={node}
-              className={nodeClass(node.id, litNodeSet)}
+              className={nodeClass(node.id, litNodeSet, selected)}
               selected={selected === node.id}
               onSelect={onSelect}
             />
@@ -210,7 +212,7 @@ export function Graph({
           <TopicMark
             key={node.id}
             node={node}
-            className={nodeClass(node.id, litNodeSet)}
+            className={nodeClass(node.id, litNodeSet, selected)}
             selected={selected === node.id}
             onSelect={onSelect}
           />
